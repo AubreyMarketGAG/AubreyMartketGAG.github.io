@@ -1,1 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audri Item Shop</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background: transparent;
+        }
 
+        .background-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #db2777 0%, #4b8ed4 100%); /* Darker pink to darker baby blue */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+        
+        .top-bar-wrapper {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 1220px;
+            width: 90%;
+            height: 55px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 9999;
+            box-sizing: border-box;
+            overflow: hidden;
+            transition: height 0.3s ease;
+            flex-wrap: wrap;
+        }
+
+        .top-bar-wrapper.expanded {
+            height: 260px;
+            align-items: flex-start;
+            padding-top: 15px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        .logo-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* Desktop navigation */
+        .nav-buttons {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-button.no-box {
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+            font-size: 16px;
+            color: #ddd;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-button.no-box:hover {
+            color: #ff69b4; /* Pink on hover */
+        }
+
+        .discord-button {
+            background-color: #4169e1; /* Blue */
+            color: white;
+            padding: 8px 18px;
+            border-radius: 9999px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+            font-size: 15px;
+            user-select: none;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .discord-button:hover {
+            background-color: #1e3a8a; /* Dark blue */
+            border: 1px solid #fce7f3; /* Light pink */
+            box-shadow: 0 0 8px rgba(252, 231, 243, 0.5);
+        }
+
+        /* Mobile navigation */
+        .hamburger {
+            display: none;
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 28px;
+            height: 28px;
+            padding: 4px;
+            cursor: pointer;
+            position: relative;
+            color: #ddd;
+        }
+
+        .hamburger::before,
+        .hamburger::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            width: calc(100% - 8px);
+            height: 3px;
+            background-color: #ddd;
+            transition: transform 0.3s ease, top 0.3s ease;
+        }
+
+        .hamburger::before {
+            top: 8px;
+        }
+
+        .hamburger::after {
+            top: 17px;
+        }
+
+        .top-bar-wrapper.expanded .hamburger::before {
+            transform: rotate(45deg);
+            top: 12.5px;
+        }
+
+        .top-bar-wrapper.expanded .hamburger::after {
+            transform: rotate(-45deg);
+            top: 12.5px;
+        }
+
+        .mobile-dropdown-menu {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            margin-top: 15px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            border-radius: 0;
+            align-items: center;
+            text-align: center;
+        }
+
+        .top-bar-wrapper.expanded .mobile-dropdown-menu {
+            display: flex;
+        }
+
+        .mobile-dropdown-menu .nav-button {
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            font-size: 16px;
+            color: #ddd;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-dropdown-menu .nav-button:hover {
+            color: #ff69b4; /* Pink */
+        }
+
+        .mobile-dropdown-menu .nav-button:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%) scaleX(1);
+            width: 100%;
+            height: 1px;
+            background-color: #ff69b4; /* Pink */
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-dropdown-menu .nav-button::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 100%;
+            height: 1px;
+            background-color: #ff69b4; /* Pink */
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-dropdown-menu .discord-button.mobile-discord {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(90deg, #4169e1 0%, #ff69b4 100%); /* Blue to pink */
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            text-align: center;
+            cursor: pointer;
+            width: 60%;
+            transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .mobile-dropdown-menu .discord-button.mobile-discord::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(90deg, #4169e1 0%, #ff69b4 100%); /* Blue to pink */
+            z-index: -1;
+            border-radius: 10px;
+            padding: 1px;
+            mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            -webkit-mask-composite: destination-out;
+            transition: background 0.3s ease, border 0.3s ease;
+        }
+
+        .mobile-dropdown-menu .discord-button.mobile-discord:hover {
+            background: #1e3a8a; /* Dark blue */
+            border: 1px solid #fce7f3; /* Light pink */
+            box-shadow: 0 0 8px rgba(252, 231, 243, 0.5);
+        }
+
+        .mobile-dropdown-menu .discord-button.mobile-discord:hover::before {
+            background: #1e3a8a; /* Dark blue */
+            border: 1px solid #fce7f3; /* Light pink */
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .nav-buttons {
+                display: none;
+            }
+            
+            .discord-button:not(.mobile-discord) {
+                display: none;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+
+            .cart-container {
+                bottom: 20px;
+                right: 20px;
+                width: 250px;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .header {
+                margin: 80px 20px 20px;
+                padding: 0;
+            }
+
+            h2 {
+                font-size: 1rem;
+                max-width: 100%;
+            }
+        }
+
+        .cart-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 2000;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            width: 300px;
+            max-height: 400px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(65, 105, 225, 0.7);
+        }
+
+        .cart-header {
+            background: linear-gradient(90deg, #4169e1 0%, #ff69b4 100%);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .cart-header h3 {
+            font-size: 16px;
+            margin: 0;
+            color: #fff;
+        }
+
+        .cart-header i {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .cart-content {
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .cart-container.expanded .cart-content {
+            display: block;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cart-item-name {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .cart-item-details {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-item-quantity {
+            font-size: 14px;
+            color: #ff69b4;
+        }
+
+        .cart-item-price {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .cart-total {
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            text-align: right;
+            font-weight: bold;
+            color: #ff69b4;
+        }
+
+        .cart-checkout {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .cart-checkout button {
+            background: linear-gradient(90deg, #4169e1 0%, #ff69b4 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .cart-checkout button:hover {
+            background: #1e3a8a; /* Dark blue */
+            border: 1px solid #fce7f3; /* Light pink */
+            box-shadow: 0 0 8px rgba(252, 231, 243, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            padding: 40px;
+            margin-left: auto;
+            margin-right: auto;
+            z-index: 1;
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: 100px auto 20px auto;
+            padding: 0 40px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #fff 0%, #ff69b4 100%); /* White to pink */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #ddd;
+            margin-bottom: 40px;
+            max-width: 600px;
+            line-height: 1.4;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2em;
+        }
+
+        .product {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1em;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.5);
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 0.5em;
+        }
+
+        .product h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin: 0.5em 0;
+        }
+
+        .product p {
+            color: #ff69b4; /* Pink */
+            font-weight: bold;
+            margin-bottom: 1em;
+        }
+
+        .product button {
+            background: linear-gradient(90deg, #4169e1 0%, #ff69b4 100%); /* Blue to pink */
+            color: white;
+            border: none;
+            padding: 0.5em 1em;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .product button:hover {
+            background: #1e3a8a; /* Dark blue */
+            border: 1px solid #fce7f3; /* Light pink */
+            box-shadow: 0 0 8px rgba(252, 231, 243, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Desktop layout modifications */
+        @media (min-width: 769px) {
+            .container {
+                max-width: 1600px;
+                grid-template-columns: 1fr;
+                gap: 60px;
+                padding: 60px;
+            }
+
+            .header {
+                max-width: 1400px;
+                margin: 120px auto 30px auto;
+                padding: 0 60px;
+            }
+
+            h1 {
+                font-size: 4rem;
+                margin-bottom: 15px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+                max-width: 800px;
+                margin-bottom: 50px;
+            }
+
+            .top-bar-wrapper {
+                max-width: 1400px;
+                height: 70px;
+                padding: 0 30px;
+                border-radius: 20px;
+            }
+
+            .logo-name {
+                font-size: 24px;
+            }
+
+            .nav-button.no-box {
+                font-size: 18px;
+                gap: 10px;
+            }
+
+            .discord-button {
+                font-size: 17px;
+                padding: 10px 24px;
+            }
+
+            .cart-container {
+                bottom: 30px;
+                right: 30px;
+                width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-layer"></div>
+
+    <div class="top-bar-wrapper">
+        <div class="logo-container">
+            <img src="https://noping.com/_next/image?url=https%3A%2F%2Fblogadmin.noping.com%2Fwp-content%2Fuploads%2F2025%2F05%2Fgrowagarden-1747688567733.jpg&w=1920&q=75" alt="Roblox Item Shop Logo" class="logo-img">
+            <div class="logo-name">Audri Shop</div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-button no-box"><span>Home</span></button>
+            <button class="nav-button no-box"><span>Shop</span></button>
+            <button class="nav-button no-box"><span>Support</span></button>
+            <button class="nav-button no-box"><span>About</span></button>
+        </div>
+
+        <a href="https://discord.gg/hksnsMzaXd" class="discord-button"><i class="fab fa-discord"></i> Join Discord</a>
+
+        <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"></button>
+        <div class="mobile-dropdown-menu" aria-hidden="true">
+            <button class="nav-button no-box"><span>Home</span></button>
+            <button class="nav-button no-box"><span>Shop</span></button>
+            <button class="nav-button no-box"><span>Support</span></button>
+            <a href="https://discord.gg/hksnsMzaXd" class="discord-button mobile-discord"><i class="fab fa-discord"></i> Join Discord</a>
+        </div>
+    </div>
+
+    <div class="header">
+        <h1>Best prices for <br>Grow A <span class="underline">Garden</span> Pets</h1>
+        <h2>I sell cheap grow a garden pets!</h2>
+    </div>
+
+    <div class="container">
+        <section class="products">
+            <div class="product" data-name="Dragon Fly" data-price="8.25">
+                <img src="https://media.discordapp.net/attachments/1327380826488569886/1387178797379620955/IMG_6960.webp?ex=685c666d&is=685b14ed&hm=2e5b112b71ff9616b2681ef2677784b5d02c2b458ac566664a5c83b5113f9544&=&format=webp" alt="Dragon Fly">
+                <h3>Dragon Fly</h3>
+                <p>$8.25 USD</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product" data-name="Disco Bee" data-price="10.50">
+                <img src="https://media.discordapp.net/attachments/1327380826488569886/1387178969320656936/IMG_6961.webp?ex=685c6696&is=685b1516&hm=fab28caad39ece042a8c3dc2341b45f096f11cfe20aff40a420e402a5fee68aa&=&format=webp" alt="Disco Bee">
+                <h3>Disco Bee</h3>
+                <p>$10.50 USD</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product" data-name="Butterfly" data-price="7.50">
+                <img src="https://media.discordapp.net/attachments/1327380826488569886/1387179377967632695/IMG_6963.webp?ex=685c66f8&is=685b1578&hm=ef93fc74a50f97b4c1ce2fbe9e56314bdd6b8cd3325c5db9d45f6d2d6a703d4b&=&format=webp" alt="Butterfly">
+                <h3>Butterfly</h3>
+                <p>$7.50 USD</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product" data-name="Mimic Octopus" data-price="10.50">
+                <img src="https://media.discordapp.net/attachments/1327380826488569886/1387179224724668587/IMG_6962.webp?ex=685c66d3&is=685b1553&hm=bd329a07f13b6ec51137eff41b8b058b8726f529da166e08128137cf7672c14b&=&format=webp" alt="Mimic Octopus">
+                <h3>Mimic Octopus</h3>
+                <p>$10.50 USD</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product" data-name="Red Fox" data-price="2.00">
+                <img src="https://media.discordapp.net/attachments/1327380826488569886/1387179574227501227/IMG_6964.webp?ex=685c6727&is=685b15a7&hm=b01a25ca6b89ca1a00016aaf4540f8f5d8858c028c10034d9282fbbb893943b3&=&format=webp" alt="Red Fox">
+                <h3>Red Fox</h3>
+                <p>$2.00 USD</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product" data-name="Queen Bee" data-price="4.50">
+                <img src="https://media.discordapp.net/attachments/1327380826488569886/1387179706461327534/IMG_6965.webp?ex=685c6746&is=685b15c6&hm=e4d8d92e8f0137f86064f5dd2ffb8a98a9ac0bf37be3471d2c7e519d937b61e6&=&format=webp" alt="Queen Bee">
+                <h3>Queen Bee</h3>
+                <p>$4.50 USD</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            <div class="product" data-name="Chicken Jockey" data-price="2.50">
+                <img src="https://media.discordapp.net/attachments/1327380826488569886/1387179884509659306/IMG_6966.webp?ex=685c6771&is=685b15f1&hm=4f8db0126f9a8755b87c8da9dfea4ae7cc3f924f57b28aba416fd86e35b4e23a&=&format=webp" alt="Chicken Jockey">
+                <h3>Chicken Jockey</h3>
+                <p>$2.50 USD</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </section>
+    </div>
+
+    <div class="cart-container">
+        <div class="cart-header">
+            <h3>Cart (<span id="cart-count">0</span>)</h3>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="cart-content">
+            <div id="cart-items"></div>
+            <div class="cart-total">Total: $<span id="cart-total">0</span> USD</div>
+            <div class="cart-checkout">
+                <button onclick="window.location.href='https://discord.gg/hksnsMzaXd'">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const topBar = document.querySelector('.top-bar-wrapper');
+
+        hamburger.addEventListener('click', () => {
+            const expanded = topBar.classList.toggle('expanded');
+            hamburger.setAttribute('aria-expanded', expanded);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.top-bar-wrapper') && !e.target.closest('.hamburger')) {
+                topBar.classList.remove('expanded');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Cart functionality
+        const cart = [];
+        const cartItemsElement = document.getElementById('cart-items');
+        const cartTotalElement = document.getElementById('cart-total');
+        const cartCountElement = document.getElementById('cart-count');
+        const cartContainer = document.querySelector('.cart-container');
+        const cartHeader = document.querySelector('.cart-header');
+
+cartHeader.addEventListener('click', () => {
+            cartContainer.classList.toggle('expanded');
+            const chevron = cartHeader.querySelector('i');
+            chevron.classList.toggle('fa-chevron-down');
+            chevron.classList.toggle('fa-chevron-up');
+        });
+
+        // Add to cart
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', () => {
+                const product = button.parentElement;
+                const name = product.dataset.name;
+                const price = parseFloat(product.dataset.price);
+
+                const existingItem = cart.find(item => item.name === name);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ name, price, quantity: 1 });
+                }
+
+                updateCart();
+            });
+        });
+
+        function updateCart() {
+            cartItemsElement.innerHTML = '';
+            let total = 0;
+            let itemCount = 0;
+
+            cart.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                itemElement.innerHTML = `
+                    <span class="cart-item-name">${item.name}</span>
+                    <div class="cart-item-details">
+                        <span class="cart-item-quantity">x${item.quantity}</span>
+                        <span class="cart-item-price">$${(item.price * item.quantity).toFixed(2)} USD</span>
+                    </div>
+                `;
+                cartItemsElement.appendChild(itemElement);
+                total += item.price * item.quantity;
+                itemCount += item.quantity;
+            });
+
+            cartTotalElement.textContent = total.toFixed(2);
+            cartCountElement.textContent = itemCount;
+        }
+    </script>
+</body>
+</html>
