@@ -4,62 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aubrey Market</title>
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 
-sans-serif;
+            font-family: 'Inter', sans-serif;
         }
-
+        
         body {
             color: #fff;
             min-height: 100vh;
-            background: linear-gradient(135deg, #7f5af0, #ff69b4, #38bdf8);
-            background-size: 600% 600%;
-            animation: gradientShift 10s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        h1, h2, h3, h4, h5, h6, p, a, span, button, input, label {
-            color: white !important;
-        }
-
-        .logo-name,
-        .nav-button,
-        .cart-item-name,
-        .cart-item-price,
-        .cart-total,
-        .discord-button,
-        .faq-content p,
-        .faq-item h3,
-        .about-section p,
-        .support-section p {
-            color: white !important;
-        }
-
-        .product p {
-            color: #ffb3ec !important;
+            overflow-x: hidden;
+            position: relative;
+            background: transparent;
         }
 
         .background-layer {
-            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #db2777 0%, #4b8ed4 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: -1;
         }
-    </style>
-</head>
-<body>
-    <!-- The original body content remains the same -->
-    <!-- Replace this comment with the full body content from your uploaded file -->
-</body>
-</html>
+        
+        .top-bar-wrapper {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 1220px;
+            width: 90%;
+            height: 55px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 9999;
+            box-sizing: border-box;
+            transition: height 0.3s ease;
+            flex-wrap: wrap;
+        }
 
+        .top-bar-wrapper.expanded {
+            height: 280px;
             align-items: flex-start;
             padding-top: 15px;
         }
@@ -731,7 +731,7 @@ sans-serif;
     <div class="top-bar-wrapper">
         <div class="logo-container">
             <img src="https://noping.com/_next/image?url=https%3A%2F%2Fblogadmin.noping.com%2Fwp-content%2Fuploads%2F2025%2F05%2Fgrowagarden-1747688567733.jpg&w=1920&q=75" alt="Roblox Item Shop Logo" class="logo-img">
-            <div class="logo-name">Audri Shop</div>
+            <div class="logo-name">Aubrey Market</div>
         </div>
 
         <div class="nav-buttons">
@@ -791,20 +791,31 @@ sans-serif;
                 <button class="add-to-cart">Add to Cart</button>
             </div>
             <div class="product" data-name="Mimic Octopus" data-price="10.50">
-                <img src="<a href='https://postimg.cc/r0BxRnr7' target='_blank'><img src='https://i.postimg.cc/r0BxRnr7/28-AE664-E-124-B-426-A-9336-308-AED6-B6-E56.jpg' border='0' alt='28-AE664-E-124-B-426-A-9336-308-AED6-B6-E56'/></a>
-                    " alt="Mimic Octopus">
+                <img src="https://i.postimg.cc/pTFJQMqh/IMG-6962.webp" alt="Mimic Octopus">
                 <h3>Mimic Octopus</h3>
-                <p>$10 USD</p>
+                <p>$10.50 USD</p>
                 <button class="add-to-cart">Add to Cart</button>
             </div>
-            <div class="product" data-name="Red Fox" data-price="2.00">
+           
+           
+           
+            <div class="product" data-name="Raccoon" data-price="2.00">
                 <img src="https://i.postimg.cc/8zZ4NH75/IMG-6964.webp" alt="Red Fox">
                 <h3>Red Fox</h3>
                 <p>$2.00 USD</p>
                 <button class="add-to-cart">Add to Cart</button>
             </div>
+            
+              <div class="product" data-name="Raccoon" data-price="2.00">
+                <img src="https://i.postimg.cc/7YMXQDDS/IMG-6959.webp" alt="Red Fox">
+                <h3>Raccoon</h3>
+                <p>$2.00 USD</p>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            
+            
             <div class="product" data-name="Queen Bee" data-price="4.50">
-                <img src="https://i.postimg.cc/Lsfm3vnf/340-A76-FC-37-C4-4-B2-D-9-BCB-89-A1-C0617-F84.jpg" alt="Queen Bee">
+                <img src="https://i.postimg.cc/W4K7J16c/IMG-6965.webp" alt="Queen Bee">
                 <h3>Queen Bee</h3>
                 <p>$4.50 USD</p>
                 <button class="add-to-cart">Add to Cart</button>
