@@ -7,7 +7,6 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
@@ -29,12 +28,95 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, #db2777 0%, #4b8ed4 100%);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: radial-gradient(ellipse at center, #1a1a3d 0%, #000 70%);
             z-index: -1;
+            overflow: hidden;
         }
-        
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .stars::before,
+        .stars::after,
+        .stars-layer2::before,
+        .stars-layer2::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            box-shadow: 
+                50vw 10vh 1px #fff, 
+                20vw 80vh 1px #ddd, 
+                80vw 30vh 1px #fff, 
+                30vw 50vh 1px #ccc, 
+                60vw 90vh 1px #fff, 
+                10vw 20vh 1px #eee, 
+                90vw 70vh 1px #fff, 
+                40vw 40vh 1px #ddd, 
+                70vw 60vh 1px #fff, 
+                25vw 25vh 1px #ccc,
+                15vw 95vh 1px #fff,
+                85vw 15vh 1px #eee,
+                35vw 75vh 1px #ddd,
+                65vw 35vh 1px #fff,
+                45vw 55vh 1px #ccc;
+            animation: twinkle 5s infinite;
+        }
+
+        .stars-layer2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            opacity: 0.6;
+        }
+
+        .stars-layer2::before,
+        .stars-layer2::after {
+            box-shadow: 
+                55vw 20vh 1px #fff, 
+                25vw 85vh 1px #ddd, 
+                75vw 25vh 1px #fff, 
+                35vw 45vh 1px #ccc, 
+                65vw 95vh 1px #fff, 
+                15vw 15vh 1px #eee, 
+                95vw 65vh 1px #fff, 
+                45vw 35vh 1px #ddd, 
+                85vw 55vh 1px #fff, 
+                20vw 30vh 1px #ccc,
+                10vw 90vh 1px #fff,
+                80vw 10vh 1px #eee,
+                30vw 70vh 1px #ddd,
+                60vw 40vh 1px #fff,
+                50vw 60vh 1px #ccc;
+            animation: twinkle 7s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .nebula {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(106, 90, 205, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(186, 85, 211, 0.2) 0%, transparent 50%);
+            opacity: 0.5;
+        }
+
         .top-bar-wrapper {
             position: fixed;
             top: 20px;
@@ -101,22 +183,47 @@
             align-items: center;
             gap: 8px;
             user-select: none;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
         }
 
         .nav-button.no-box:hover {
-            color: #ff69b4;
+            color: #ba55d3;
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
+        }
+
+        .nav-button.shop-button {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, #483d8b 0%, #ba55d3 50%, #483d8b 100%);
+            background-size: 200% 100%;
+            animation: gradientFlow 4s ease infinite;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-button.shop-button:hover {
+            background: linear-gradient(90deg, #2f2d6e 0%, #9932cc 100%);
+            animation: none;
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .discord-button {
-            background-color: #4169e1;
+            background: linear-gradient(90deg, #483d8b 0%, #ba55d3 100%);
             color: white;
             padding: 8px 18px;
             border-radius: 9999px;
             font-weight: 600;
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+            transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
             font-size: 15px;
             user-select: none;
             white-space: nowrap;
@@ -124,34 +231,30 @@
             align-items: center;
             gap: 8px;
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .discord-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .discord-button:hover::before {
+            left: 100%;
         }
 
         .discord-button:hover {
-            background-color: #1e3a8a;
-            border: 1px solid #fce7f3;
-            box-shadow: 0 0 8px rgba(252, 231, 243, 0.5);
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 9999px;
-            padding: 6px 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .search-bar input {
-            background: transparent;
-            border: none;
-            color: #fff;
-            font-size: 14px;
-            outline: none;
-            width: 150px;
-        }
-
-        .search-bar i {
-            color: #ddd;
+            background: linear-gradient(90deg, #2f2d6e 0%, #9932cc 100%);
+            border: 1px solid #e6e6fa;
+            box-shadow: 0 0 12px rgba(186, 85, 211, 0.8);
+            transform: scale(1.05);
         }
 
         .hamburger {
@@ -175,7 +278,7 @@
             width: calc(100% - 8px);
             height: 3px;
             background-color: #ddd;
-            transition: transform 0.3s ease, top 0.3s ease;
+            transition: transform 0.3s ease, top 0.3s ease, background-color 0.3s ease;
         }
 
         .hamburger::before {
@@ -189,11 +292,13 @@
         .top-bar-wrapper.expanded .hamburger::before {
             transform: rotate(45deg);
             top: 12.5px;
+            background-color: #ba55d3;
         }
 
         .top-bar-wrapper.expanded .hamburger::after {
             transform: rotate(-45deg);
             top: 12.5px;
+            background-color: #ba55d3;
         }
 
         .mobile-dropdown-menu {
@@ -224,11 +329,28 @@
             color: #ddd;
             cursor: pointer;
             position: relative;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .mobile-dropdown-menu .nav-button.shop-button {
+            background: linear-gradient(90deg, #483d8b 0%, #ba55d3 50%, #483d8b 100%);
+            background-size: 200% 100%;
+            animation: gradientFlow 4s ease infinite;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .mobile-dropdown-menu .nav-button.shop-button:hover {
+            background: linear-gradient(90deg, #2f2d6e 0%, #9932cc 100%);
+            animation: none;
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
         }
 
         .mobile-dropdown-menu .nav-button:hover {
-            color: #ff69b4;
+            color: #ba55d3;
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
         }
 
         .mobile-dropdown-menu .nav-button:hover::after {
@@ -239,7 +361,7 @@
             transform: translateX(-50%) scaleX(1);
             width: 100%;
             height: 1px;
-            background-color: #ff69b4;
+            background-color: #ba55d3;
             transition: transform 0.3s ease;
         }
 
@@ -251,14 +373,14 @@
             transform: translateX(-50%) scaleX(0);
             width: 100%;
             height: 1px;
-            background-color: #ff69b4;
+            background-color: #ba55d3;
             transition: transform 0.3s ease;
         }
 
         .mobile-dropdown-menu .discord-button.mobile-discord {
             position: relative;
             z-index: 1;
-            background: linear-gradient(90deg, #4169e1 0%, #ff69b4 100%);
+            background: linear-gradient(90deg, #483d8b 0%, #ba55d3 100%);
             color: white;
             padding: 8px;
             border-radius: 8px;
@@ -267,7 +389,7 @@
             text-align: center;
             cursor: pointer;
             width: 60%;
-            transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+            transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
             overflow: hidden;
             border: none;
             display: flex;
@@ -277,14 +399,75 @@
             text-decoration: none;
         }
 
+        .mobile-dropdown-menu .discord-button.mobile-discord::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .mobile-dropdown-menu .discord-button.mobile-discord:hover::before {
+            left: 100%;
+        }
+
         .mobile-dropdown-menu .discord-button.mobile-discord:hover {
-            background: #1e3a8a;
-            border: 1px solid #fce7f3;
-            box-shadow: 0 0 8px rgba(252, 231, 243, 0.5);
+            background: linear-gradient(90deg, #2f2d6e 0%, #9932cc 100%);
+            border: 1px solid #e6e6fa;
+            box-shadow: 0 0 12px rgba(186, 85, 211, 0.8);
+            transform: scale(1.05);
+        }
+
+        .search-section {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1em;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            padding: 4px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 600px;
+            margin: 0 auto;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .search-bar:hover {
+            box-shadow: 0 0 10px rgba(186, 85, 211, 0.8);
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 12px;
+            outline: none;
+            width: 100%;
+        }
+
+        .search-bar i {
+            color: #ddd;
+            font-size: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .search-bar:hover i {
+            color: #ba55d3;
         }
 
         @media (max-width: 768px) {
-            .nav-buttons, .search-bar {
+            .nav-buttons {
                 display: none;
             }
             
@@ -294,12 +477,6 @@
             
             .hamburger {
                 display: block;
-            }
-
-            .cart-container {
-                bottom: 20px;
-                right: 20px;
-                width: 250px;
             }
 
             .container {
@@ -316,150 +493,14 @@
                 font-size: 1rem;
                 max-width: 100%;
             }
-        }
 
-        .cart-container {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 2000;
-            background-color: rgba(255, filmmaker:0px;255,255,255,0.15);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 16px;
-            width: 320px;
-            max-height: 450px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(65, 105, 225, 0.8);
-            backdrop-filter: blur(8px);
-        }
+            .search-section {
+                padding: 0.75em;
+            }
 
-        .cart-header {
-            background: linear-gradie nt(90deg, #4169e1 0%, #ff69b4 100%);
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            border-radius: 16px 16px 0 0;
-            transition: background 0.3s ease;
-        }
-
-        .cart-header:hover {
-            background: linear-gradient(90deg, #1e3a8a 0%, #db2777 100%);
-        }
-
-        .cart-header h3 {
-            font-size: 16px;
-            margin: 0;
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .cart-header i {
-            font-size: 18px;
-            color: #fff;
-            transition: transform 0.3s ease;
-        }
-
-        .cart-container.expanded .cart-header i {
-            transform: rotate(180deg);
-        }
-
-        .cart-content {
-            padding: 12px;
-            max-height: 360px;
-            overflow-y: auto;
-            display: none;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .cart-container.expanded .cart-content {
-            display: block;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background 0.2s ease;
-        }
-
-        .cart-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .cart-item-name {
-            font-size: 14px;
-            color: #fff;
-            flex: 1;
-        }
-
-        .cart-item-details {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .cart-item-quantity {
-            font-size: 14px;
-            color: #ff69b4;
-            font-weight: 500;
-        }
-
-        .cart-item-price {
-            font-size: 14px;
-            color: #fff;
-            font-weight: 500;
-        }
-
-        .cart-item-remove {
-            background: none;
-            border: none;
-            color: #ff69b4;
-            font-size: 14px;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .cart-item-remove:hover {
-            color: #fce7f3;
-        }
-
-        .cart-total {
-            padding: 12px;
-            background-color: rgba(255, 255, 255, 0.05);
-            text-align: right;
-            font-weight: 600;
-            color: #ff69b4;
-            font-size: 15px;
-        }
-
-        .cart-checkout {
-            padding: 12px;
-            text-align: center;
-        }
-
-        .cart-checkout button {
-            background: linear-gradient(90deg, #4169e1 0%, #ff69b4 100%);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 15px;
-            width: 100%;
-            transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-        }
-
-        .cart-checkout button:hover {
-            background: linear-gradient(90deg, #1e3a8a 0%, #db2777 100%);
-            border: 1px solid #fce7f3;
-            box-shadow: 0 0 10px rgba(252, 231, 243, 0.6);
-            transform: translateY(-2px);
+            .search-bar {
+                max-width: 400px;
+            }
         }
 
         .container {
@@ -487,7 +528,7 @@
             font-size: 3rem;
             font-weight: 900;
             margin-bottom: 10px;
-            background: linear-gradient(90deg, #fff 0%, #ff69b4 100%);
+            background: linear-gradient(90deg, #e6e6fa 0%, #ba55d3 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.5px;
@@ -502,6 +543,11 @@
             line-height: 1.4;
             margin-left: auto;
             margin-right: auto;
+            transition: text-shadow 0.3s ease;
+        }
+
+        h2:hover {
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
         }
 
         .products {
@@ -517,11 +563,14 @@
             padding: 1em;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            perspective: 1000px;
+            transform-style: preserve-3d;
         }
 
         .product:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.5);
+            box-shadow: 0 6px 20px rgba(186, 85, 211, 0.8);
         }
 
         .product img {
@@ -529,35 +578,71 @@
             height: auto;
             border-radius: 8px;
             margin-bottom: 0.5em;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .product img:hover {
+            box-shadow: 0 0 12px rgba(186, 85, 211, 0.8);
         }
 
         .product h3 {
             color: #fff;
             font-size: 1.2rem;
             margin: 0.5em 0;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .product h3:hover {
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
         }
 
         .product p {
-            color: #ff69b4;
+            color: #ba55d3;
             font-weight: bold;
+            font-size: 1.1rem;
             margin-bottom: 1em;
+            background: linear-gradient(90deg, #e6e6fa 0%, #ba55d3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: text-shadow 0.3s ease;
         }
 
-        .product button {
-            background: linear-gradient(90deg, #4169e1 0%, #ff69b4 100%);
+        .product p:hover {
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
+        }
+
+        .product button.buy-now {
+            background: linear-gradient(90deg, #483d8b 0%, #ba55d3 100%);
             color: white;
             border: none;
             padding: 0.5em 1em;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
+            position: relative;
+            overflow: hidden;
             transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
         }
 
-        .product button:hover {
-            background: linear-gradient(90deg, #1e3a8a 0%, #db2777 100%);
-            border: 1px solid #fce7f3;
-            box-shadow: 0 0 8px rgba(252, 231, 243, 0.5);
+        .product button.buy-now::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .product button.buy-now.clicked::before {
+            left: 100%;
+        }
+
+        .product button.buy-now:hover {
+            background: linear-gradient(90deg, #2f2d6e 0%, #9932cc 100%);
+            border: 1px solid #e6e6fa;
+            box-shadow: 0 0 12px rgba(186, 85, 211, 0.8);
             transform: translateY(-2px);
         }
 
@@ -572,7 +657,7 @@
         .about-section h2 {
             font-size: 2rem;
             margin-bottom: 1em;
-            background: linear-gradient(90deg, #fff 0%, #ff69b4 100%);
+            background: linear-gradient(90deg, #e6e6fa 0%, #ba55d3 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -582,6 +667,33 @@
             line-height: 1.6;
             max-width: 800px;
             margin: 0 auto 1em;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .about-section p:hover {
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
+        }
+
+        .about-section .payment-methods {
+            color: #ddd;
+            margin-top: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .about-section .payment-methods i {
+            font-size: 1.5rem;
+            color: #ba55d3;
+            transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .about-section .payment-methods i:hover {
+            transform: scale(1.2);
+            color: #e6e6fa;
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
         }
 
         .faq-section {
@@ -594,7 +706,7 @@
         .faq-section h2 {
             font-size: 2rem;
             margin-bottom: 1.5em;
-            background: linear-gradient(90deg, #fff 0%, #ff69b4 100%);
+            background: linear-gradient(90deg, #e6e6fa 0%, #ba55d3 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-align: center;
@@ -614,20 +726,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, text-shadow 0.3s ease;
         }
 
         .faq-item h3:hover {
             background: rgba(255, 255, 255, 0.05);
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
         }
 
         .faq-item h3 i {
             font-size: 14px;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .faq-item h3:hover i {
+            color: #ba55d3;
         }
 
         .faq-item.active h3 i {
             transform: rotate(180deg);
+            color: #ba55d3;
         }
 
         .faq-content {
@@ -638,7 +756,7 @@
         }
 
         .faq-item.active .faq-content {
-            max-height: 200px; /* Adjust as needed */
+            max-height: 200px;
             padding: 1em;
         }
 
@@ -646,6 +764,11 @@
             color: #ddd;
             line-height: 1.6;
             margin: 0;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .faq-content p:hover {
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
         }
 
         .support-section {
@@ -659,7 +782,7 @@
         .support-section h2 {
             font-size: 2rem;
             margin-bottom: 1em;
-            background: linear-gradient(90deg, #fff 0%, #ff69b4 100%);
+            background: linear-gradient(90deg, #e6e6fa 0%, #ba55d3 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -669,6 +792,194 @@
             line-height: 1.6;
             max-width: 800px;
             margin: 0 auto;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .support-section p:hover {
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
+        }
+
+        .footer-section {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1em;
+            text-align: center;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .footer-section p {
+            color: #ddd;
+            font-size: 0.9rem;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .footer-section p:hover {
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
+        }
+
+        .footer-section a {
+            color: #ba55d3;
+            text-decoration: none;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #e6e6fa;
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(8px);
+            perspective: 1000px;
+        }
+
+        .modal-content img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1em;
+            transition: box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .modal-content img:hover {
+            box-shadow: 0 0 12px rgba(186, 85, 211, 0.8);
+        }
+
+        .modal-content h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 0.5em;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .modal-content h3:hover {
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
+        }
+
+        .modal-content p.description {
+            color: #ddd;
+            line-height: 1.6;
+            margin-bottom: 1em;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .modal-content p.description:hover {
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
+        }
+
+        .modal-content p.price {
+            color: #ba55d3;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 1em;
+            background: linear-gradient(90deg, #e6e6fa 0%, #ba55d3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .modal-content p.price:hover {
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
+        }
+
+        .modal-content .payment-methods {
+            color: #ddd;
+            margin-bottom: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .modal-content .payment-methods i {
+            font-size: 1.5rem;
+            color: #ba55d3;
+            transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .modal-content .payment-methods i:hover {
+            transform: scale(1.2);
+            color: #e6e6fa;
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
+        }
+
+        .modal-content .buy-now-button {
+            background: linear-gradient(90deg, #483d8b 0%, #ba55d3 100%);
+            color: white;
+            border: none;
+            padding: 0.75em 1.5em;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .modal-content .buy-now-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .modal-content .buy-now-button.clicked::before {
+            left: 100%;
+        }
+
+        .modal-content .buy-now-button:hover {
+            background: linear-gradient(90deg, #2f2d6e 0%, #9932cc 100%);
+            border: 1px solid #e6e6fa;
+            box-shadow: 0 0 12px rgba(186, 85, 211, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .modal-content .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .modal-content .close-modal:hover {
+            color: #ba55d3;
+            text-shadow: 0 0 8px rgba(186, 85, 211, 0.8);
         }
 
         @media (min-width: 769px) {
@@ -716,17 +1027,15 @@
                 font-size: 17px;
                 padding: 10px 24px;
             }
-
-            .cart-container {
-                bottom: 30px;
-                right: 30px;
-                width: 320px;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="background-layer"></div>
+    <div class="background-layer">
+        <div class="stars"></div>
+        <div class="stars-layer2"></div>
+        <div class="nebula"></div>
+    </div>
 
     <div class="top-bar-wrapper">
         <div class="logo-container">
@@ -737,14 +1046,9 @@
         <div class="nav-buttons">
             <button class="nav-button no-box" onclick="scrollToSection('home')"><span>Home</span></button>
             <button class="nav-button no-box" onclick="scrollToSection('about')"><span>About</span></button>
-            <button class="nav-button no-box" onclick="scrollToSection('shop')"><span>Shop</span></button>
+            <button class="nav-button no-box shop-button" onclick="scrollToSection('shop')"><span>Shop</span></button>
             <button class="nav-button no-box" onclick="scrollToSection('faq')"><span>FAQ</span></button>
             <button class="nav-button no-box" onclick="scrollToSection('support')"><span>Support</span></button>
-        </div>
-
-        <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" id="search-input" placeholder="Search pets...">
         </div>
 
         <a href="https://discord.gg/zAfhWmtRtK" class="discord-button"><i class="fab fa-discord"></i> Join Discord</a>
@@ -753,7 +1057,7 @@
         <div class="mobile-dropdown-menu" aria-hidden="true">
             <button class="nav-button no-box" onclick="scrollToSection('home')"><span>Home</span></button>
             <button class="nav-button no-box" onclick="scrollToSection('about')"><span>About</span></button>
-            <button class="nav-button no-box" onclick="scrollToSection('shop')"><span>Shop</span></button>
+            <button class="nav-button no-box shop-button" onclick="scrollToSection('shop')"><span>Shop</span></button>
             <button class="nav-button no-box" onclick="scrollToSection('faq')"><span>FAQ</span></button>
             <button class="nav-button no-box" onclick="scrollToSection('support')"><span>Support</span></button>
             <a href="https://discord.gg/zAfhWmtRtK" class="discord-button mobile-discord"><i class="fab fa-discord"></i> Join Discord</a>
@@ -768,57 +1072,66 @@
     <div class="container">
         <section class="about-section" id="about">
             <h2>About Aubrey's Market</h2>
-            <p>Welcome to Aubrey's Market, your go-to place for affordable and exclusive pets from Grow A Garden! I'm passionate about helping players improve their gaming experience with unique pets at the best prices. My shop is built on trust, quality, and a love for the Grow A Garden community. Join our Discord to connect with other players and stay updated on new pet arrivals!</p>
+            <p>Hi there! Welcome to Aubrey's Market  your go to spot for cute, affordable, and exclusive pets from Grow A Garden!
+I’m Aubrey, and I started this little shop because I genuinely love helping other players find the perfect pets to make their gardens better. Everything here is clean and legit, and I always try to keep prices fair because I know some people don't like spending a lot of money for digital items.
+checkout out our discord to stay updated on new pets / items!</p>
+            <div class="payment-methods">
+                <p>Accepted Payment Methods: <i class="fab fa-paypal"></i>PayPal <i class="fas fa-dollar-sign"></i>CashApp <i class="fab fa-vimeo"></i>Venmo <i class="fab fa-bitcoin"></i>Bitcoin <i class="fab fa-apple-pay"></i>Apple Pay</p>
+            </div>
+        </section>
+
+        <section class="search-section">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Search pets...">
+            </div>
         </section>
 
         <section class="products" id="shop">
-            <div class="product" data-name="Dragon Fly" data-price="8.25">
-                <img src="https://i.postimg.cc/YqcLyHNG/5069992-E-C42-A-47-AC-9870-8-D2-A435639-CD.jpg" alt="Dragon Fly">
-                <h3>Dragon Fly</h3>
-                <p>$7.25 USD</p>
-                <button class="add-to-cart">Add to Cart</button>
+            <div class="product" data-name="Red Fox" data-price="2.00" data-img="https://i.ibb.co/4gF1Q5Zq/image-2025-06-28-173307577.png" data-desc=" Desc goes here " data-url="https://aubreymarketgag.mysellauth.com/product/red-fox">
+                <img src="https://i.ibb.co/4gF1Q5Zq/image-2025-06-28-173307577.pngp" alt="Red Fox">
+                <h3>Red Fox</h3>
+                <p>$2.00 USD</p>
+                <button class="buy-now">Buy Now</button>
             </div>
-            <div class="product" data-name="Disco Bee" data-price="10">
-                <img src="https://i.postimg.cc/d3xBKnL2/ABBF76-EB-913-E-44-E8-9-E7-A-AB63-E7-CD5-EC7.jpg" alt="Disco Bee">
-                <h3>Disco Bee</h3>
-                <p>$10 USD</p>
-                <button class="add-to-cart">Add to Cart</button>
+            <div class="product" data-name="Raccoon" data-price="8.50" data-img="https://i.postimg.cc/hjKM8fkd/AC4-E7246-6-B90-4836-91-E3-624037-CE9092.jpg" data-desc="A Desc goes here" data-url="https://aubreymarketgag.mysellauth.com/product/racooon">
+                <img src="https://i.postimg.cc/hjKM8fkd/AC4-E7246-6-B90-4836-91-E3-624037-CE9092.jpg" alt="Raccoon">
+                <h3>Raccoon</h3>
+                <p>$8.50 USD</p>
+                <button class="buy-now">Buy Now</button>
             </div>
-            <div class="product" data-name="Butterfly" data-price="7.50">
-                <img src="https://i.postimg.cc/NGJbTGpK/FE7-AF790-4210-4146-8-BD8-8-B6-A407-A4-BC3.jpg" alt="Butterfly">
-                <h3>Butterfly</h3>
-                <p>$7.50 USD</p>
-                <button class="add-to-cart">Add to Cart</button>
+            <div class="product" data-name="Queen Bee" data-price="4.00" data-img="https://i.postimg.cc/C1J7cw06/340-A76-FC-37-C4-4-B2-D-9-BCB-89-A1-C0617-F84.jpg" data-desc=" Desc goes here" data-url="https://aubreymarketgag.mysellauth.com/product/grow-a-garden-queen-bee-pet">
+                <img src="https://i.postimg.cc/C1J7cw06/340-A76-FC-37-C4-4-B2-D-9-BCB-89-A1-C0617-F84.jpg" alt="Queen Bee">
+                <h3>Queen Bee</h3>
+                <p>$4.00 USD</p>
+                <button class="buy-now">Buy Now</button>
             </div>
-            <div class="product" data-name="Mimic Octopus" data-price="9.50">
+            <div class="product" data-name="Mimic Octopus" data-price="9.50" data-img="https://i.postimg.cc/Bb6gyRQZ/28-AE664-E-124-B-426-A-9336-308-AED6-B6-E56.jpg" data-desc=" Desc goes here" data-url="https://aubreymarketgag.mysellauth.com/product/grow-a-garden-mimic-octopus">
                 <img src="https://i.postimg.cc/Bb6gyRQZ/28-AE664-E-124-B-426-A-9336-308-AED6-B6-E56.jpg" alt="Mimic Octopus">
                 <h3>Mimic Octopus</h3>
                 <p>$9.50 USD</p>
-                <button class="add-to-cart">Add to Cart</button>
+                <button class="buy-now">Buy Now</button>
             </div>
-           
-           
-           
-            <div class="product" data-name="Red Fox" data-price="2.00">
-                <img src="https://i.postimg.cc/8zZ4NH75/IMG-6964.webp" alt="Red Fox">
-                <h3>Red Fox</h3>
-                <p>$2.00 USD</p>
-                <button class="add-to-cart">Add to Cart</button>
+            <div class="product" data-name="Disco Bee" data-price="10.00" data-img="https://i.postimg.cc/d3xBKnL2/ABBF76-EB-913-E-44-E8-9-E7-A-AB63-E7-CD5-EC7.jpg" data-desc=" Desc goes here" data-url="https://aubreymarketgag.mysellauth.com/product/grow-a-garden-disco-bee">
+                <img src="https://i.postimg.cc/d3xBKnL2/ABBF76-EB-913-E-44-E8-9-E7-A-AB63-E7-CD5-EC7.jpg" alt="Disco Bee">
+                <h3>Disco Bee</h3>
+                <p>$10.00 USD</p>
+                <button class="buy-now">Buy Now</button>
             </div>
-            
-              <div class="product" data-name="Raccoon" data-price="8.50">
-                <img src="https://i.postimg.cc/hjKM8fkd/AC4-E7246-6-B90-4836-91-E3-624037-CE9092.jpg" alt="Red Fox">
-                <h3>Raccoon</h3>
-                <p>$8.50 USD</p>
-                <button class="add-to-cart">Add to Cart</button>
+            <div class="product" data-name="Butterfly" data-price="7.50" data-img="https://i.postimg.cc/NGJbTGpK/FE7-AF790-4210-4146-8-BD8-8-B6-A407-A4-BC3.jpg" data-desc=" Desc goes here" data-url="https://aubreymarketgag.mysellauth.com/product/grow-a-garden-butterfly">
+                <img src="https://i.postimg.cc/NGJbTGpK/FE7-AF790-4210-4146-8-BD8-8-B6-A407-A4-BC3.jpg" alt="Butterfly">
+                <h3>Butterfly</h3>
+                <p>$7.50 USD</p>
+                <button class="buy-now">Buy Now</button>
             </div>
             
             
-            <div class="product" data-name="Queen Bee" data-price="4">
-                <img src="https://i.postimg.cc/C1J7cw06/340-A76-FC-37-C4-4-B2-D-9-BCB-89-A1-C0617-F84.jpg" alt="Queen Bee">
-                <h3>Queen Bee</h3>
-                <p>$4 USD</p>
-                <button class="add-to-cart">Add to Cart</button>
+            
+                <div class="product" data-name="Dragonfly" data-price="7.25" data-img="https://i.postimg.cc/YqcLyHNG/5069992-E-C42-A-47-AC-9870-8-D2-A435639-CD.jpg" data-desc=" Desc goes here" data-url="https://aubreymarketgag.mysellauth.com/product/grow-a-garden-dragon-fly">
+                <img src="https://i.postimg.cc/YqcLyHNG/5069992-E-C42-A-47-AC-9870-8-D2-A435639-CD.jpg" alt="Dragonfly">
+                <h3>Dragonfly</h3>
+                <p>$7.25 USD</p>
+                <button class="buy-now">Buy Now</button>
             </div>
         </section>
 
@@ -827,25 +1140,25 @@
             <div class="faq-item">
                 <h3>How do I purchase a pet? <i class="fas fa-chevron-down"></i></h3>
                 <div class="faq-content">
-                    <p>Add your desired pets to the cart and click "Checkout" to proceed via Discord, where I'll guide you through the payment and delivery process.</p>
+                    <p>Click "Buy Now" on your desired pet, review the details in the pop-up, and click "Buy Now" again to proceed to the purchase page via our trusted platform.</p>
                 </div>
             </div>
             <div class="faq-item">
                 <h3>Are these pets legitimate? <i class="fas fa-chevron-down"></i></h3>
                 <div class="faq-content">
-                    <p>Yes, all pets sold at Audbreys  Market  are 100% legitimate and sourced directly from Grow A Garden. Your satisfaction and trust are my priorities!</p>
+                    <p>Yes, all pets sold at Aubrey's Market are 100% legitimate and sourced directly from Grow A Garden. Your satisfaction and trust are my priorities!</p>
                 </div>
             </div>
             <div class="faq-item">
                 <h3>How long does delivery take? <i class="fas fa-chevron-down"></i></h3>
                 <div class="faq-content">
-                    <p>Delivery typically takes 1 -30 mintues after payment confirmation, but it may vary based on availability. I'll keep you updated via Discord.</p>
+                    <p>Delivery typically takes 1-30 minutes after payment confirmation, but it may vary based on availability. I'll keep you updated via Discord.</p>
                 </div>
             </div>
             <div class="faq-item">
                 <h3>Can I return a pet? <i class="fas fa-chevron-down"></i></h3>
                 <div class="faq-content">
-                    <p>all sales are final. However, if you encounter any issues, please contact me via Discord for support through the support tickets .</p>
+                    <p>All sales are final. However, if you encounter any issues, please contact me via Discord for support through the support tickets.</p>
                 </div>
             </div>
         </section>
@@ -854,19 +1167,24 @@
             <h2>Support</h2>
             <p>Need help? Join our <a href="https://discord.gg/zAfhWmtRtK" class="discord-button" style="display: inline-flex;"><i class="fab fa-discord"></i> Discord</a> for assistance with orders, questions, or feedback. I'm here to ensure you have the best experience!</p>
         </section>
+
+        <section class="footer-section">
+            <p>© 2025 <a href="https://aubreymarketgag.com">Aubrey Market</a>. All rights reserved.</p>
+        </section>
     </div>
 
-    <div class="cart-container">
-        <div class="cart-header">
-            <h3>Shopping Cart (<span id="cart-count">0</span>)</h3>
-            <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="cart-content">
-            <div id="cart-items"></div>
-            <div class="cart-total">Total: $<span id="cart-total">0</span> USD</div>
-            <div class="cart-checkout">
-                <button onclick="window.location.href='https://discord.gg/zAfhWmtRtK'">Proceed to Checkout</button>
+    <!-- Modal -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <button class="close-modal"><i class="fas fa-times"></i></button>
+            <img id="modal-img" src="" alt="Product Image">
+            <h3 id="modal-name"></h3>
+            <p id="modal-desc" class="description"></p>
+            <p id="modal-price" class="price"></p>
+            <div class="payment-methods">
+                <p>Accepted Payment Methods: <i class="fab fa-paypal"></i>PayPal <i class="fas fa-dollar-sign"></i>CashApp <i class="fab fa-vimeo"></i>Venmo <i class="fab fa-bitcoin"></i>Bitcoin <i class="fab fa-apple-pay"></i>Apple Pay</p>
             </div>
+            <a id="modal-buy-now" href="#" class="buy-now-button">Buy Now</a>
         </div>
     </div>
 
@@ -911,78 +1229,79 @@
             }
         }
 
-        // Cart 
-        const cart = [];
-        const cartItemsElement = document.getElementById('cart-items');
-        const cartTotalElement = document.getElementById('cart-total');
-        const cartCountElement = document.getElementById('cart-count');
-        const cartContainer = document.querySelector('.cart-container');
-        const cartHeader = document.querySelector('.cart-header');
-
-        cartHeader.addEventListener('click', () => {
-            cartContainer.classList.toggle('expanded');
-            const chevron = cartHeader.querySelector('i');
-            chevron.classList.toggle('fa-chevron-down');
-            chevron.classList.toggle('fa-chevron-up');
-        });
-
-        // Add to cart
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', () => {
-                const product = button.parentElement;
-                const name = product.dataset.name;
-                const price = parseFloat(product.dataset.price);
-
-                const existingItem = cart.find(item => item.name === name);
-                if (existingItem) {
-                    existingItem.quantity += 1;
-                } else {
-                    cart.push({ name, price, quantity: 1 });
-                }
-
-                updateCart();
+        // 4 3d effect
+        function applyTiltEffect(element) {
+            element.addEventListener('mousemove', (e) => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const tiltX = (centerY - y) / centerY * 15; // Max 15deg rotation
+                const tiltY = (x - centerX) / centerX * 15;
+                element.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
             });
+
+            element.addEventListener('mouseleave', () => {
+                element.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            });
+        }
+
+        
+        document.querySelectorAll('.product').forEach(product => {
+            applyTiltEffect(product);
         });
 
-        // Remove from cart
-        function removeFromCart(name) {
-            const itemIndex = cart.findIndex(item => item.name === name);
-            if (itemIndex !== -1) {
-                cart.splice(itemIndex, 1);
-                updateCart();
+        const modal = document.getElementById('product-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalName = document.getElementById('modal-name');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalPrice = document.getElementById('modal-price');
+        const modalBuyNow = document.getElementById('modal-buy-now');
+        const closeModal = document.querySelector('.close-modal');
+
+        modal.addEventListener('transitionend', () => {
+            if (modal.style.display === 'flex') {
+                applyTiltEffect(modalImg);
             }
-        }
+        });
 
-        function updateCart() {
-            cartItemsElement.innerHTML = '';
-            let total = 0;
-            let itemCount = 0;
+        document.querySelectorAll('.buy-now').forEach(button => {
+            button.addEventListener('click', () => {
+                //  shine effect 4 button
+                button.classList.add('clicked');
+                setTimeout(() => {
+                    button.classList.remove('clicked');
+                }, 500);
 
-            cart.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'cart-item';
-                itemElement.innerHTML = `
-                    <span class="cart-item-name">${item.name}</span>
-                    <div class="cart-item-details">
-                        <span class="cart-item-quantity">x${item.quantity}</span>
-                        <span class="cart-item-price">$${(item.price * item.quantity).toFixed(2)} USD</span>
-                        <button class="cart-item-remove" onclick="removeFromCart('${item.name}')"><i class="fas fa-trash"></i></button>
-                    </div>
-                `;
-                cartItemsElement.appendChild(itemElement);
-                total += item.price * item.quantity;
-                itemCount += item.quantity;
+                const product = button.parentElement;
+                modalImg.src = product.dataset.img;
+                modalImg.alt = product.dataset.name;
+                modalName.textContent = product.dataset.name;
+                modalDesc.textContent = product.dataset.desc;
+                modalPrice.textContent = `$${parseFloat(product.dataset.price).toFixed(2)} USD`;
+                modalBuyNow.href = product.dataset.url;
+                modal.style.display = 'flex';
             });
+        });
 
-            cartTotalElement.textContent = total.toFixed(2);
-            cartCountElement.textContent = itemCount;
-        }
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            modalImg.style.transform = 'rotateX(0deg) rotateY(0deg)'; // Reset tilt
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                modalImg.style.transform = 'rotateX(0deg) rotateY(0deg)'; // Reset tilt
+            }
+        });
 
         // Search 
         const searchInput = document.getElementById('search-input');
         const products = document.querySelectorAll('.product');
 
-        searchInput.addEventListener('input', () => {
+        function performSearch() {
             const searchTerm = searchInput.value.toLowerCase();
             products.forEach(product => {
                 const name = product.dataset.name.toLowerCase();
@@ -992,6 +1311,16 @@
                     product.style.display = 'none';
                 }
             });
+        }
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        searchInput.addEventListener('blur', () => {
+            performSearch();
         });
 
         // FAQ 
